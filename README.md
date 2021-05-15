@@ -1,0 +1,2 @@
+# diplom
+trash for diplom
