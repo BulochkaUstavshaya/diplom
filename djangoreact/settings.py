@@ -25,11 +25,12 @@ import os
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-!h=i5)u#*b%4@9v)_g0(p5b!)*n)!ii=(s25r0$8s$*1lgkyyy')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 # DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['*']
-
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
