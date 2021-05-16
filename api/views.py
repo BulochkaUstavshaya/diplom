@@ -169,7 +169,14 @@ class SaveUserClothes(APIView):
 
         try:
             # if user have this clothes then BAN
-            if UserClothes.objects.filter(linkSource=request.data["linkSource"]).first() is None: # вынеси в отдельную переменную
+            userclothes = UserClothes.objects.filter(linkSource=request.data["linkSource"]).first()
+        except Exception as e:
+            return Response({
+                "exeption_get_clothes": str(e)
+            })
+
+        try:
+            if userclothes is None: # вынеси в отдельную переменную
                 userclothes = UserClothes.objects.create(nameClothes=request.data["nameClothes"],
                                                          typeClothes=request.data["typeClothes"],
                                                          description=request.data["description"],
