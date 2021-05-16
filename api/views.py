@@ -109,6 +109,7 @@ class GetUserClothes(APIView):
         # return Response({"users": serializer.data})
         return Response(serializer.data)
 
+
 class SaveUserClothes(APIView):
     def post(self, request):
         try:
@@ -120,14 +121,21 @@ class SaveUserClothes(APIView):
             # if user have this clothes then BAN
             if UserClothes.objects.filter(linkSource=request.data["linkSource"]).first() is None: # вынеси в отдельную переменную
                 # insert clothes in db
-                userclothes = UserClothes()
-                userclothes.nameClothes = request.data["nameClothes"]
-                userclothes.typeClothes = request.data["typeClothes"]
-                userclothes.description = request.data["description"]
-                userclothes.price = request.data["price"]
-                userclothes.linkImage = request.data["linkImage"]
-                userclothes.linkSource = request.data["linkSource"]
-                userclothes.save()
+                # userclothes = UserClothes()
+                # userclothes.nameClothes = request.data["nameClothes"]
+                # userclothes.typeClothes = request.data["typeClothes"]
+                # userclothes.description = request.data["description"]
+                # userclothes.price = request.data["price"]
+                # userclothes.linkImage = request.data["linkImage"]
+                # userclothes.linkSource = request.data["linkSource"]
+                # userclothes.save()
+                userclothes = UserClothes.objects.create(nameClothes=request.data["nameClothes"],
+                                                         typeClothes=request.data["typeClothes"],
+                                                         description=request.data["description"],
+                                                         price=request.data["price"],
+                                                         linkImage=request.data["linkImage"],
+                                                         linkSource=request.data["linkSource"]
+                                                         )
             else:
                 userclothes = UserClothes.objects.filter(linkSource=request.data["linkSource"]).first()
 
