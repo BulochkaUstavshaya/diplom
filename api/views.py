@@ -192,10 +192,16 @@ class SaveUserClothes(APIView):
                     userclothes.price = request.data["price"]
                     userclothes.linkImage = request.data["linkImage"]
                     userclothes.linkSource = request.data["linkSource"]
-                    userclothes.save()
                 except Exception as e:
                     return Response({
                         "exeption_to_create_clothes": str(e)
+                    })
+
+                try:
+                    userclothes.save()
+                except Exception as e:
+                    return Response({
+                        "exeption_to_save_clothes": str(e)
                     })
             else:
                 userclothes = UserClothes.objects.filter(linkSource=request.data["linkSource"]).first()
