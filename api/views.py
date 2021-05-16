@@ -178,31 +178,31 @@ class SaveUserClothes(APIView):
         try:
             if userclothes is None: # вынеси в отдельную переменную
                 try:
-                # userclothes = UserClothes.objects.create(nameClothes=request.data["nameClothes"],
-                #                                          typeClothes=request.data["typeClothes"],
-                #                                          description=request.data["description"],
-                #                                          price=request.data["price"],
-                #                                          linkImage=request.data["linkImage"],
-                #                                          linkSource=request.data["linkSource"]
-                #                                          )
-                    userclothes = UserClothes()
-                    userclothes.nameClothes = request.data["nameClothes"]
-                    userclothes.typeClothes = request.data["typeClothes"]
-                    userclothes.description = request.data["description"]
-                    userclothes.price = request.data["price"]
-                    userclothes.linkImage = request.data["linkImage"]
-                    userclothes.linkSource = request.data["linkSource"]
+                    userclothes = UserClothes.objects.get_or_create(nameClothes=request.data["nameClothes"],
+                                                                    typeClothes=request.data["typeClothes"],
+                                                                    description=request.data["description"],
+                                                                    price=request.data["price"],
+                                                                    linkImage=request.data["linkImage"],
+                                                                    linkSource=request.data["linkSource"]
+                                                                    )
+                #     userclothes = UserClothes()
+                #     userclothes.nameClothes = request.data["nameClothes"]
+                #     userclothes.typeClothes = request.data["typeClothes"]
+                #     userclothes.description = request.data["description"]
+                #     userclothes.price = request.data["price"]
+                #     userclothes.linkImage = request.data["linkImage"]
+                #     userclothes.linkSource = request.data["linkSource"]
                 except Exception as e:
                     return Response({
                         "exeption_to_create_clothes": str(e)
                     })
 
-                try:
-                    userclothes.save()
-                except Exception as e:
-                    return Response({
-                        "exeption_to_save_clothes": str(e)
-                    })
+                # try:
+                #     userclothes.save()
+                # except Exception as e:
+                #     return Response({
+                #         "exeption_to_save_clothes": str(e)
+                #     })
             else:
                 userclothes = UserClothes.objects.filter(linkSource=request.data["linkSource"]).first()
 
