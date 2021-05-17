@@ -194,7 +194,7 @@ class SaveUserClothes(APIView):
                 #     userclothes.linkSource = request.data["linkSource"]
                 except Exception as e:
                     return Response({
-                        "exeption_to_create_clothes": str(e)
+                        "exeption_to_create_clothes": str(e)[0:240]
                     })
 
                 # try:
@@ -210,7 +210,7 @@ class SaveUserClothes(APIView):
 
         except Exception as e:
             return Response({
-                "exeption_create_clothes": str(e)
+                "exeption_create_clothes": str(e)[0:240]
             })
 
         try:
