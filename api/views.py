@@ -193,8 +193,9 @@ class SaveUserClothes(APIView):
                 #     userclothes.linkImage = request.data["linkImage"]
                 #     userclothes.linkSource = request.data["linkSource"]
                 except Exception as e:
+
                     return Response({
-                        "exeption_to_create_clothes": e
+                        "exeption_to_create_clothes": repr(e)
                     })
 
                 # try:
