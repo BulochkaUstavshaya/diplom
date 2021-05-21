@@ -37,6 +37,9 @@ class SaveUserClothes(APIView): # замени на put
         if not existClothes(request):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        # if existCloneSetOfClothes(request):
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
         # get user in token
         user_id = TokenUser(token).id
         user = User.objects.filter(id=user_id).first()
@@ -62,6 +65,54 @@ class SaveUserClothes(APIView): # замени на put
                 "nameSetOfClothes": setOfClothes.name_Set_Of_Clothes
             })
 
+        # return Response({
+        #     "setOfClothes": setOfClothes.id
+        # })
+
+# рабочая штука
+# 9 шмоток
+# class SaveUserClothes(APIView): # замени на put
+#     def post(self, request):
+#         try:
+#             token = AccessToken(request.data[0]["access"])
+#             token.check_exp()
+#
+#         except Exception as e:
+#             return Response(invalidToken)
+#
+#
+#         if not existClothes(request):
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
+#
+#         # if existCloneSetOfClothes(request):
+#         #     return Response(status=status.HTTP_400_BAD_REQUEST)
+#
+#         listClothes = request.data
+#         listClothes.pop()
+#
+#         # get user in token
+#         user_id = TokenUser(token).id
+#         user = User.objects.filter(id=user_id).first()
+#
+#         # create a new set of clothes and associate with a user
+#         setOfClothes = SetOfClothes.objects.create(users=user) #bulk=False
+#
+#         for i in range(1, len(request.data)):
+#             clothes = Clothes.objects.get_or_create(
+#                 name_Clothes=request.data[i]["nameClothes"],
+#                 type_Clothes=request.data[i]["typeClothes"],
+#                 description=request.data[i]["description"],
+#                 price=request.data[i]["price"],
+#                 link_Image=request.data[i]["linkImage"],
+#                 link_Source=request.data[i]["linkSource"]
+#             )
+#             id_clothes = Clothes.objects.get(link_Source=request.data[i]["linkSource"]).id
+#             setOfClothes.clothes_set.add(id_clothes)
+#
+#         return Response({
+#             "setOfClothes": setOfClothes.id
+#         })
+###################
 
 class DeleteUserClothes(APIView): # замени на delete
     def delete(self, request):
@@ -89,6 +140,31 @@ class DeleteUserClothes(APIView): # замени на delete
             "status": "successful"
         })
 
+
+# рабочее удаление
+# class DeleteUserClothes(APIView): # замени на delete
+#     def post(self, request):
+#         try:
+#             token = AccessToken(request.data["access"])
+#             token.check_exp()
+#
+#         except Exception as e:
+#             return Response(invalidToken)
+#
+#         # get set of clothes
+#         setOfClothes = SetOfClothes.objects.filter(id=request.data["setOfClothes"]).first()
+#
+#         if setOfClothes is None:
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
+#
+#         # user_id = TokenUser(token).id
+#         # user = User.objects.filter(id=user_id).first()
+#
+#         SetOfClothes.objects.filter(id=request.data["setOfClothes"]).delete()
+#
+#         # Допили удаление
+#         return Response(status=status.HTTP_205_RESET_CONTENT)
+#################
 
 class GetUserClothes(APIView):  # замени на гет
     def post(self, request):
@@ -124,78 +200,21 @@ class GetUserClothes(APIView):  # замени на гет
 
         return Response(listClothes)
 
-
-class RequestToMicroservice(APIView):
-    def post(self, request):
-        return Response(testResponse)
-
-
-
-# OLD WORKING VERSION
-
-
-# from rest_framework.permissions import IsAuthenticated
-# from rest_framework.views import APIView
-# from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-# from rest_framework.response import Response
-# from rest_framework import status
-# from rest_framework_simplejwt.models import TokenUser # for get user id
-# from .models import User, UserClothes
-# from .serializers import UserClothesSerializer
-# from .utils import ExistClothes
-#
-# class LogoutView(APIView):
-#     # permission_classes = (IsAuthenticated,)
-#
+# class GetUserClothes(APIView):
 #     def post(self, request):
-#         try:
-#             refresh_token = request.data["refresh"]
-#             token = RefreshToken(refresh_token)
-#             token.blacklist()
+
 #
-#             return Response(status=status.HTTP_205_RESET_CONTENT)
+#         user_id = TokenUser(token).id
+#         user = User.objects.filter(id=user_id).first()
 #
-#         except Exception as e:
-#             # return Response(status=status.HTTP_400_BAD_REQUEST)
-#             return Response({
-#                 "exeption": str(e)
-#             })
+#         userclothes = UserClothes.objects.all().filter(users=user)
 #
-# # class SaveUserClothes(APIView):
-# #     def post(self, request):
-# #         try:
-# #             access_token = request.data["access"]
-# #             token = AccessToken(access_token)
-# #             # check access token
-# #             token.check_exp()
-# #         except Exception as e:
-# #             return Response({
-# #                 "detail": "Token is invalid or expired",
-# #                 "code": "token_not_valid"
-# #             })
-# #
-# #         if not ExistClothes(request):
-# #             return Response(status=status.HTTP_400_BAD_REQUEST)
-# #
-# #         clothes = UserClothes.objects.filter(linkSource=request.data["linkSource"]).first()
-# #         # if user have this clothes then BAN
-# #         if clothes is None:  # вынеси в отдельную переменную
-# #             # insert clothes in db
-# #             clothes.nameClothes = request.data["nameClothes"]
-# #             clothes.typeClothes = request.data["typeClothes"]
-# #             clothes.description = request.data["description"]
-# #             clothes.price = request.data["price"]
-# #             clothes.linkImage = request.data["linkImage"]
-# #             clothes.linkSource = request.data["linkSource"]
-# #             clothes.save()
-# #
-# #         user_id = TokenUser(token).id
-# #         user = User.objects.filter(id=user_id).first()
-# #         user.userclothes_set.add(clothes)
-# #
-# #         return Response(status=status.HTTP_201_CREATED)
+#         serializer = UserClothesSerializer(userclothes, many=True)
 #
-#
+#         # return Response({"users": serializer.data})
+#         return Response(serializer.data)
+
+
 # class DeleteUserClothes(APIView):
 #     def post(self, request):
 #         try:
@@ -366,3 +385,7 @@ class RequestToMicroservice(APIView):
 #             return Response({
 #                 "exeption_add_clothes_for_user": str(e)
 #             })
+
+class RequestToMicroservice(APIView):
+    def post(self, request):
+        return Response(testResponse)

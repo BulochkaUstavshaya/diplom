@@ -47,18 +47,17 @@ def existCloneSetOfClothes(request):
 
 def countclothes(request):
     pass
+    # coincidences = 0
+    # for i in range(1, len(request.data)):
+    #     if request.data[i]["linkSource"] == Clothes.objects.filter(link_Source=request.data[i]["linkSource"]).first().link_Source:
+    #         coincidences += 1
+    #
+    # return str(coincidences)
 
+        # SetOfClothes.objects.filter(id=request.data["setOfClothes"])
 
-
-
-# OLD WORKING VERSION
-
-# from django.core.validators import validate_email
-# from django.core.exceptions import ValidationError
-# import requests
-#
-# def ExistClothes(request):
-#     if (request.data["nameClothes"] != ""
+# def existClothes(request):
+#     if (request.data[id]["nameClothes"] != ""
 #             and request.data["typeClothes"] != ""
 #             and request.data["description"] != ""
 #             and request.data["price"] != ""
@@ -77,3 +76,5 @@ def countclothes(request):
 #             return False
 #
 #         return True
+#
+
